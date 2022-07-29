@@ -266,7 +266,7 @@ public class MixinTargetContext extends ClassContext implements IMixinContext {
      * 
      * @param field merged field
      */
-    void fieldMerged(FieldNode field) {
+    public void fieldMerged(FieldNode field) {
         this.getTarget().fieldMerged(field);
 
         Annotations.setVisible(field, MixinMerged.class,
@@ -1126,7 +1126,7 @@ public class MixinTargetContext extends ClassContext implements IMixinContext {
     /**
      * Get the mixin info for this mixin
      */
-    MixinInfo getInfo() {
+    public MixinInfo getInfo() {
         return this.mixin;
     }
     
@@ -1152,7 +1152,7 @@ public class MixinTargetContext extends ClassContext implements IMixinContext {
      * 
      * @return mixin interfaces
      */
-    Set<String> getInterfaces() {
+    public Set<String> getInterfaces() {
         return this.mixin.getInterfaces();
     }
     
@@ -1161,7 +1161,7 @@ public class MixinTargetContext extends ClassContext implements IMixinContext {
      * 
      * @return shadow methods in the mixin
      */
-    Collection<MethodNode> getShadowMethods() {
+    public Collection<MethodNode> getShadowMethods() {
         return this.shadowMethods;
     }
 
@@ -1170,7 +1170,7 @@ public class MixinTargetContext extends ClassContext implements IMixinContext {
      * 
      * @return non-shadow methods in the mixin
      */
-    List<MethodNode> getMethods() {
+    public List<MethodNode> getMethods() {
         return this.classNode.methods;
     }
     
@@ -1179,7 +1179,7 @@ public class MixinTargetContext extends ClassContext implements IMixinContext {
      * 
      * @return shadow fields in the mixin
      */
-    Set<Entry<FieldNode, Field>> getShadowFields() {
+    public Set<Entry<FieldNode, Field>> getShadowFields() {
         return this.shadowFields.entrySet();
     }
     
@@ -1188,7 +1188,7 @@ public class MixinTargetContext extends ClassContext implements IMixinContext {
      * 
      * @return non-shadow fields in the mixin
      */
-    List<FieldNode> getFields() {
+    public List<FieldNode> getFields() {
         return this.classNode.fields;
     }
 

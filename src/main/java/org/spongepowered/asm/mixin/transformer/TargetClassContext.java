@@ -38,6 +38,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.spongepowered.asm.mixin.ChasmUtil;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.MixinEnvironment.Option;
@@ -57,7 +58,7 @@ import org.spongepowered.asm.util.perf.Profiler.Section;
 /**
  * Struct for containing target class information during mixin application
  */
-final class TargetClassContext extends ClassContext implements ITargetClassContext {
+public final class TargetClassContext extends ClassContext implements ITargetClassContext {
 
     /**
      * Logger
@@ -440,7 +441,18 @@ final class TargetClassContext extends ClassContext implements ITargetClassConte
 
     private MixinApplicatorStandard createApplicator() {
         if (this.classInfo.isInterface()) {
+            /* TODO:
+            MixinApplicatorInterface chasmixApplicator = ChasmUtil.getInterfaceApplicator(this);
+            if (chasmixApplicator != null) {
+                return chasmixApplicator;
+            }
+             */
             return new MixinApplicatorInterface(this);
+        }
+
+        MixinApplicatorStandard chasmixApplicator = ChasmUtil.getStandardApplicator(this);
+        if (chasmixApplicator != null) {
+            return chasmixApplicator;
         }
         return new MixinApplicatorStandard(this);
     }

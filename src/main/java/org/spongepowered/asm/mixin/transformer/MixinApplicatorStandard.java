@@ -74,7 +74,7 @@ import com.google.common.collect.ImmutableList;
 /**
  * Applies mixins to a target class
  */
-class MixinApplicatorStandard {
+public class MixinApplicatorStandard {
     
     /**
      * Annotations which can have constraints
@@ -266,7 +266,7 @@ class MixinApplicatorStandard {
      */
     protected final boolean mergeSignatures;
     
-    MixinApplicatorStandard(TargetClassContext context) {
+    protected MixinApplicatorStandard(TargetClassContext context) {
         this.context = context;
         this.targetName = context.getClassName();
         this.targetClass = context.getClassNode();
@@ -359,9 +359,13 @@ class MixinApplicatorStandard {
                     this.activities);
         }
 
+        this.afterApply();
+
         this.applySourceMap(this.context);
         this.context.processDebugTasks();
     }
+
+    protected void afterApply() {}
 
     /**
      * Apply the mixin described by mixin to the supplied ClassNode

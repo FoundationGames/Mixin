@@ -70,11 +70,16 @@ repositories {
         name = 'forge'
         url = 'https://files.minecraftforge.net/maven'
     }
+    maven {
+        name = 'Quilt'
+        url = 'https://maven.quiltmc.org/repository/snapshot'
+    }
 }
 
 configurations {
     stagingJar
-    
+
+    chasmixImplementation       .extendsFrom implementation
     exampleImplementation       .extendsFrom implementation
     fernflowerImplementation    .extendsFrom implementation
     launchwrapperImplementation .extendsFrom implementation
@@ -122,6 +127,12 @@ sourceSets {
         compileClasspath += main.output
         ext.languageVersion = 8
         ext.compatibility = '1.8'
+        ext.modularityExcluded = true
+    }
+    chasmix {
+        compileClasspath += main.output
+        ext.languageVersion = 17
+        ext.compatibility = '17'
         ext.modularityExcluded = true
     }
     example {
@@ -184,6 +195,10 @@ dependencies {
     implementation "org.ow2.asm:asm-tree:$asmVersion"
     implementation "org.ow2.asm:asm-commons:$asmVersion"
     implementation "org.ow2.asm:asm-util:$asmVersion"
+
+    // Chasm
+    chasmixImplementation 'org.quiltmc.chasm:chasm:0.1.0-SNAPSHOT'
+    chasmixImplementation 'org.quiltmc.chasm:chassembly:0.1.0-SNAPSHOT'
 
     // Annotation Processor
     apImplementation "org.ow2.asm:asm-tree:$asmVersion"

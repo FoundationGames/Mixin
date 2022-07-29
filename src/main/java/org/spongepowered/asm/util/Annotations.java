@@ -147,7 +147,7 @@ public final class Annotations {
     /**
      * Annotations which are eligible for merge via {@link #mergeAnnotations}
      */
-    private static final Class<?>[] MERGEABLE_MIXIN_ANNOTATIONS = new Class<?>[] {
+    public static final Class<?>[] MERGEABLE_MIXIN_ANNOTATIONS = new Class<?>[] {
         Overwrite.class,
         Intrinsic.class,
         Final.class,
