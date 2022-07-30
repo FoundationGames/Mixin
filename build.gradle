@@ -29,7 +29,7 @@ defaultTasks 'licenseFormat', 'check', 'build'
 // Basic project information
 group = 'net.fabricmc'
 archivesBaseName = 'sponge-mixin'
-version = buildVersion + "+mixin." + upstreamMixinVersion
+version = buildVersion + "+mixin." + upstreamMixinVersion + "+chasmix." + chasmixVersion
 
 
 def ENV = System.getenv()
