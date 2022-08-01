@@ -24,13 +24,17 @@
  */
 package org.spongepowered.asm.mixin;
 
+import com.google.common.base.Supplier;
 import org.spongepowered.asm.mixin.transformer.MixinApplicatorStandard;
 import org.spongepowered.asm.mixin.transformer.TargetClassContext;
+import org.spongepowered.asm.service.IGlobalPropertyService;
 
 public final class ChasmUtil {
-    private static ApplicatorProvider<MixinApplicatorStandard> standardProvider;
-
     private ChasmUtil() {}
+
+    /* --------------------- */
+
+    private static ApplicatorProvider<MixinApplicatorStandard> standardProvider;
 
     public static void createApplicatorProviders(ApplicatorProvider<MixinApplicatorStandard> provider) {
         standardProvider = provider;
@@ -46,5 +50,21 @@ public final class ChasmUtil {
 
     public interface ApplicatorProvider<A extends MixinApplicatorStandard> {
         A provide(TargetClassContext ctx);
+    }
+
+    /* --------------------- */
+
+    private static Supplier<IGlobalPropertyService> propertySvc;
+
+    public static void providePropertyService(Supplier<IGlobalPropertyService> provider) {
+        propertySvc = provider;
+    }
+
+    public static void destroyPropertyServiceProvider() {
+        propertySvc = null;
+    }
+
+    public static IGlobalPropertyService getPropertyService() {
+        return propertySvc != null ? propertySvc.get() : null;
     }
 }

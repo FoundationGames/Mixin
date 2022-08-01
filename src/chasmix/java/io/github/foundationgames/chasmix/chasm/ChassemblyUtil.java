@@ -28,21 +28,21 @@ import org.quiltmc.chasm.lang.api.ast.IntegerNode;
 import org.quiltmc.chasm.lang.api.ast.MapNode;
 import org.quiltmc.chasm.lang.api.ast.Node;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class ChassemblyUtil {
     private ChassemblyUtil() {}
 
     public static MapNode transformation(MapNode target, Node apply) {
-        var map = new HashMap<String, Node>();
+        var map = new LinkedHashMap<String, Node>();
         map.put("target", target);
         map.put("apply", apply);
         return new MapNode(map);
     }
 
     public static MapNode transformation(MapNode target, Map<String, Node> sources, Node apply) {
-        var map = new HashMap<String, Node>();
+        var map = new LinkedHashMap<String, Node>();
         map.put("target", target);
         map.put("sources", new MapNode(sources));
         map.put("apply", apply);
@@ -50,7 +50,7 @@ public final class ChassemblyUtil {
     }
 
     public static MapNode target(Node node, Node start, Node end) {
-        var map = new HashMap<String, Node>();
+        var map = new LinkedHashMap<String, Node>();
         map.put("node", node);
         map.put("start", start);
         map.put("end", end);
@@ -62,7 +62,7 @@ public final class ChassemblyUtil {
     }
 
     public static MapNode target(Node node) {
-        var map = new HashMap<String, Node>();
+        var map = new LinkedHashMap<String, Node>();
         map.put("node", node);
         return new MapNode(map);
     }

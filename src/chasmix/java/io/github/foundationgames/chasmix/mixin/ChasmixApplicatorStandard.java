@@ -41,12 +41,17 @@ import java.util.Map;
  * Reimplements mixin application in Chassembly
  */
 public class ChasmixApplicatorStandard extends MixinApplicatorStandard {
-    protected final ChasmixTransformerBuilder transformers;
+    protected ChasmixTransformerBuilder transformers;
 
     public ChasmixApplicatorStandard(TargetClassContext context) {
         super(context);
+    }
 
-        this.transformers = new ChasmixTransformerBuilder(this.targetClass, context.getClassInfo());
+    @Override
+    protected void applyMixin(MixinTargetContext mixin, MixinApplicatorStandard.ApplicatorPass pass) {
+        this.transformers = new ChasmixTransformerBuilder(pass, mixin.getTargetClassInfo(), mixin.getClassInfo());
+        super.applyMixin(mixin, pass);
+        ChasmixTransformerPool.getCurrentPool().ifPresent(pool -> pool.add(this.transformers.createTransformer()));
     }
 
     @Override
@@ -85,10 +90,5 @@ public class ChasmixApplicatorStandard extends MixinApplicatorStandard {
                 }
             }
         }
-    }
-
-    @Override
-    protected void afterApply() {
-        ChasmixTransformerPool.getCurrentPool().ifPresent(pool -> pool.add(this.transformers.createTransformer()));
     }
 }

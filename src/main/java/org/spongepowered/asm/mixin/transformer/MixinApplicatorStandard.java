@@ -92,7 +92,7 @@ public class MixinApplicatorStandard {
     /**
      * Passes the mixin applicator applies to each mixin
      */
-    enum ApplicatorPass {
+    public enum ApplicatorPass {
 
         /**
          * Main pass, mix in methods, fields, interfaces etc
@@ -359,20 +359,16 @@ public class MixinApplicatorStandard {
                     this.activities);
         }
 
-        this.afterApply();
-
         this.applySourceMap(this.context);
         this.context.processDebugTasks();
     }
-
-    protected void afterApply() {}
 
     /**
      * Apply the mixin described by mixin to the supplied ClassNode
      * 
      * @param mixin Mixin to apply
      */
-    protected final void applyMixin(MixinTargetContext mixin, ApplicatorPass pass) {
+    protected void applyMixin(MixinTargetContext mixin, ApplicatorPass pass) {
         IActivity activity = this.activities.begin("Apply");
         switch (pass) {
             case MAIN:

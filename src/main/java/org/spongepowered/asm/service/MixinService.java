@@ -37,6 +37,7 @@ import org.spongepowered.asm.logging.LoggerAdapterConsole;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ObjectArrays;
+import org.spongepowered.asm.mixin.ChasmUtil;
 
 /**
  * Provides access to the service layer which connects the mixin transformer to
@@ -281,6 +282,11 @@ public final class MixinService {
     }
 
     private IGlobalPropertyService initPropertyService() {
+        IGlobalPropertyService chasmSvc = ChasmUtil.getPropertyService();
+        if (chasmSvc != null) {
+            return chasmSvc;
+        }
+
         ServiceLoader<IGlobalPropertyService> serviceLoader = ServiceLoader.<IGlobalPropertyService>load(IGlobalPropertyService.class,
                 this.getClass().getClassLoader());
         

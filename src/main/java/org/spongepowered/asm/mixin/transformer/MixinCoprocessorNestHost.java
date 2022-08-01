@@ -51,14 +51,14 @@ import org.spongepowered.asm.util.asm.ClassNodeAdapter;
  * they are mixin targets or not, in order to add any additional nest members
  * where a mixin targets the class, or one of its existing nest members.</p>
  */
-class MixinCoprocessorNestHost extends MixinCoprocessor {
+public class MixinCoprocessorNestHost extends MixinCoprocessor {
     
     /**
      * Classes which are nest hosts with new members injected by mixins 
      */
     private final Map<String, Set<String>> nestHosts = new HashMap<String, Set<String>>();
 
-    MixinCoprocessorNestHost() {
+    public MixinCoprocessorNestHost() {
     }
     
     void registerNestMember(String hostName, String memberName) {

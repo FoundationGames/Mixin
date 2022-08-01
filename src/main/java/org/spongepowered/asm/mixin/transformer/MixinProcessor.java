@@ -70,7 +70,7 @@ import org.spongepowered.asm.util.perf.Profiler.Section;
 /**
  * Heart of the Mixin pipeline 
  */
-class MixinProcessor {
+public class MixinProcessor {
 
     /**
      * Phase during which an error occurred, delegates to functionality in
@@ -219,7 +219,7 @@ class MixinProcessor {
     /**
      * ctor 
      */
-    MixinProcessor(MixinEnvironment environment, Extensions extensions, IHotSwap hotSwapper, MixinCoprocessorNestHost nestHostCoprocessor) {
+    public MixinProcessor(MixinEnvironment environment, Extensions extensions, IHotSwap hotSwapper, MixinCoprocessorNestHost nestHostCoprocessor) {
         this.lock = this.service.getReEntranceLock();
         
         this.extensions = extensions;
@@ -269,7 +269,7 @@ class MixinProcessor {
         }
     }
 
-    synchronized boolean applyMixins(MixinEnvironment environment, String name, ClassNode targetClassNode) {
+    public synchronized boolean applyMixins(MixinEnvironment environment, String name, ClassNode targetClassNode) {
         if (name == null || this.errorState) {
             return false;
         }
@@ -389,7 +389,8 @@ class MixinProcessor {
             throw er;
         } catch (Throwable th) {
             this.dumpClassOnFailure(name, targetClassNode, environment);
-            throw new MixinTransformerError("An unexpected critical error was encountered", th);
+            //throw new MixinTransformerError("An unexpected critical error was encountered", th);
+            th.printStackTrace();
         } finally {
             this.lock.pop();
             mixinTimer.end();

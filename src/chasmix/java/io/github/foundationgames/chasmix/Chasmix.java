@@ -24,15 +24,65 @@
  */
 package io.github.foundationgames.chasmix;
 
+import io.github.foundationgames.chasmix.chasm.ChasmixTransformerPool;
+import io.github.foundationgames.chasmix.mixin.ChasmixBlackboard;
 import io.github.foundationgames.chasmix.mixin.ChasmixApplicatorStandard;
+import io.github.foundationgames.chasmix.mixin.ChasmixMixinService;
+import org.objectweb.asm.tree.ClassNode;
+import org.quiltmc.chasm.api.Transformer;
+import org.quiltmc.chasm.lang.internal.render.Renderer;
 import org.spongepowered.asm.mixin.ChasmUtil;
+import org.spongepowered.asm.mixin.MixinEnvironment;
+import org.spongepowered.asm.mixin.Mixins;
+import org.spongepowered.asm.mixin.extensibility.IMixinConfig;
+import org.spongepowered.asm.mixin.transformer.Config;
+import org.spongepowered.asm.mixin.transformer.DefaultExtensions;
+import org.spongepowered.asm.mixin.transformer.MixinCoprocessorNestHost;
+import org.spongepowered.asm.mixin.transformer.MixinProcessor;
+import org.spongepowered.asm.mixin.transformer.SyntheticClassRegistry;
+import org.spongepowered.asm.mixin.transformer.ext.Extensions;
+import org.spongepowered.asm.service.MixinService;
 
-public final class Chasmix {
-    public static final Chasmix INSTANCE = new Chasmix();
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
-    private Chasmix() {}
+public class Chasmix {
+    public static Renderer DEBUG_PRINT_RENDERER = null;
 
-    public void setupApplicatorProviders() {
+    private final MixinProcessor mixin;
+
+    public Chasmix() {
+        var clsReg = new SyntheticClassRegistry();
+        var exts = new Extensions(clsReg);
+        var coprocs = new MixinCoprocessorNestHost();
+        DefaultExtensions.create(MixinEnvironment.getDefaultEnvironment(), exts, clsReg, coprocs);
+
+        this.mixin = new MixinProcessor(null, exts, null, coprocs);
+    }
+
+    public static void addMixinConfig(String configFile) {
+        Mixins.getConfigs().add(Config.create(configFile));
+    }
+
+    public Optional<List<Transformer>> generateChasmTransformers(String targetName, ClassNode targetClass) {
+        ChasmixTransformerPool.createPool();
+        this.mixin.applyMixins(MixinEnvironment.getDefaultEnvironment(), targetName, targetClass);
+        var ret = ChasmixTransformerPool.getCurrentPool();
+        ChasmixTransformerPool.destroyPool();
+
+        return ret;
+    }
+
+    public Optional<List<Transformer>> generateChasmTransformers(String targetName) throws IOException, ClassNotFoundException {
+        var node = MixinService.getService().getBytecodeProvider().getClassNode(targetName);
+
+        return generateChasmTransformers(targetName, node);
+    }
+
+    public static void provideServices() {
+        System.setProperty("mixin.service", ChasmixMixinService.class.getName());
+        ChasmUtil.providePropertyService(ChasmixBlackboard::new);
         ChasmUtil.createApplicatorProviders(ChasmixApplicatorStandard::new);
     }
 }

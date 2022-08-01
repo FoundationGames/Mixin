@@ -36,12 +36,12 @@ import org.spongepowered.asm.util.IConsumer;
 /**
  * Default extensions for mixin processor
  */
-final class DefaultExtensions {
+public final class DefaultExtensions {
 
     private DefaultExtensions() {
     }
 
-    static void create(final MixinEnvironment environment, final Extensions extensions, final SyntheticClassRegistry registry,
+    public static void create(final MixinEnvironment environment, final Extensions extensions, final SyntheticClassRegistry registry,
             final MixinCoprocessorNestHost nestHostCoprocessor) {
         IConsumer<ISyntheticClassInfo> registryDelegate = new IConsumer<ISyntheticClassInfo>() {
             @Override
